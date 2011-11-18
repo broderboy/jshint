@@ -276,6 +276,7 @@ var JSHINT = (function () {
             funcscope   : true, // if only function scope should be used for scope tests
             globalstrict: true, // if global "use strict"; should be allowed (also
                                 // enables 'strict')
+            greasemonkey: true, // if GreseMonkey globals should be predefined
             immed       : true, // if immediate invocations must be wrapped in parens
             iterator    : true, // if the `__iterator__` property should be allowed
             jquery      : true, // if jQuery globals should be predefined
@@ -506,6 +507,21 @@ var JSHINT = (function () {
         functions,      // All of the functions
 
         global,         // The global scope
+        
+        greasemonkey = {
+    		GM_addStyle           : false,
+    		GM_deleteValue        : false,
+    		GM_getResourceText    : false,
+    		GM_getResourceURL     : false,
+    		GM_getValue           : false,
+    		GM_listValues         : false,
+    		GM_log                : false,
+    		GM_registerMenuCommand: false,
+    		GM_setValue           : false,
+    		GM_xmlhttpRequest     : false,
+    		unsafeWindow          : false
+    	},
+        
         implied,        // Implied globals
         inblock,
         indent,
@@ -910,6 +926,10 @@ var JSHINT = (function () {
 
         if (option.mootools) {
             combine(predefined, mootools);
+        }
+        
+        if (option.greasemonkey) {
+        	combine(predefined, greasemonkey);
         }
 
         if (option.wsh) {
@@ -4254,3 +4274,17 @@ loop:   for (;;) {
 // Make JSHINT a Node module, if possible.
 if (typeof exports == 'object' && exports)
     exports.JSHINT = JSHINT;
+
+console.log('init');
+var fs = require('fs');
+var input = fs.readFileSync('input.txt').toString(),
+	opts = {"forin":true,"noarg":true,"noempty":true,"eqeqeq":true,"bitwise":true,"undef":true,"curly":true,"browser":true,"devel":true,"jquery":true, "greasemonkey": true}
+var hint = JSHINT(input, opts);
+console.log(opts);
+console.log(hint);
+if(!hint){
+	console.log('errors');
+	console.log(JSHINT.errors);
+	//console.log('data');
+	//console.log(JSHINT.data());
+}
