@@ -166,7 +166,9 @@
  Debug, Draggable, Draggables, Droppables, Document, DomReady, DOMReady, Drag,
  E, Enumerator, Enumerable, Element, Elements, Error, Effect, EvalError, Event,
  Events, FadeAnimation, Field, Flash, Float32Array, Float64Array, Form,
- FormField, Frame, FormData, Function, Fx, GetObject, Group, Hash, HotKey,
+ FormField, Frame, FormData, Function, Fx, GetObject, greasemonkey, GM_addStyle,
+ GM_deleteValue, GM_getResourceText, GM_getResourceURL, GM_getValue, GM_listValues,
+ GM_log, GM_registerMenuCommand, GM_setValue, GM_xmlhttpRequest, Group, Hash, HotKey,
  HTMLElement, HTMLAnchorElement, HTMLBaseElement, HTMLBlockquoteElement,
  HTMLBodyElement, HTMLBRElement, HTMLButtonElement, HTMLCanvasElement, HTMLDirectoryElement,
  HTMLDivElement, HTMLDListElement, HTMLFieldSetElement,
@@ -222,8 +224,8 @@
  send, serialize, sessionStorage, setInterval, setTimeout, shift, slice, sort,spawn,
  split, stack, status, start, strict, sub, substr, supernew, shadow, supplant, sum,
  sync, test, toLowerCase, toString, toUpperCase, toint32, token, top, trailing, type,
- typeOf, Uint16Array, Uint32Array, Uint8Array, undef, unused, urls, validthis, value, valueOf,
- var, version, WebSocket, white, window, Worker, wsh*/
+ typeOf, Uint16Array, Uint32Array, Uint8Array, undef, unsafeWindow, unused, urls, validthis, value,
+ valueOf, var, version, WebSocket, white, window, Worker, wsh*/
 
 /*global exports: false */
 
@@ -509,18 +511,18 @@ var JSHINT = (function () {
         global,         // The global scope
         
         greasemonkey = {
-    		GM_addStyle           : false,
-    		GM_deleteValue        : false,
-    		GM_getResourceText    : false,
-    		GM_getResourceURL     : false,
-    		GM_getValue           : false,
-    		GM_listValues         : false,
-    		GM_log                : false,
-    		GM_registerMenuCommand: false,
-    		GM_setValue           : false,
-    		GM_xmlhttpRequest     : false,
-    		unsafeWindow          : false
-    	},
+            GM_addStyle           : false,
+            GM_deleteValue        : false,
+            GM_getResourceText    : false,
+            GM_getResourceURL     : false,
+            GM_getValue           : false,
+            GM_listValues         : false,
+            GM_log                : false,
+            GM_registerMenuCommand: false,
+            GM_setValue           : false,
+            GM_xmlhttpRequest     : false,
+            unsafeWindow          : false
+        },
         
         implied,        // Implied globals
         inblock,
@@ -929,7 +931,7 @@ var JSHINT = (function () {
         }
         
         if (option.greasemonkey) {
-        	combine(predefined, greasemonkey);
+            combine(predefined, greasemonkey);
         }
 
         if (option.wsh) {
@@ -4275,16 +4277,3 @@ loop:   for (;;) {
 if (typeof exports == 'object' && exports)
     exports.JSHINT = JSHINT;
 
-console.log('init');
-var fs = require('fs');
-var input = fs.readFileSync('input.txt').toString(),
-	opts = {"forin":true,"noarg":true,"noempty":true,"eqeqeq":true,"bitwise":true,"undef":true,"curly":true,"browser":true,"devel":true,"jquery":true, "greasemonkey": true}
-var hint = JSHINT(input, opts);
-console.log(opts);
-console.log(hint);
-if(!hint){
-	console.log('errors');
-	console.log(JSHINT.errors);
-	//console.log('data');
-	//console.log(JSHINT.data());
-}
